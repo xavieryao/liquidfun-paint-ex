@@ -14,8 +14,12 @@ import com.google.fpl.liquidfun.ParticleColor;
 
 import java.nio.ByteBuffer;
 
+import android.util.Log;
+
 public class Boundary {
-    private static final float RADIUS = 0.18f;
+    private static final String TAG = "Boundry";
+
+    private static final float RADIUS = 0.05f;
     private static final int PARTICLE_FLAGS = ParticleFlag.wallParticle |
             ParticleFlag.barrierParticle |
             ParticleFlag.repulsiveParticle;
@@ -26,11 +30,12 @@ public class Boundary {
     private Vec2 mVelocity = new Vec2(0, 0);
 
     public void drawLine(float fromX, float fromY, float toX, float toY) {
+        Log.d(TAG, "drawLine, from" + fromX + "," + fromY + "to: " + toX + "," + toY);
         Vector2f startPoint = getWorldPoint(fromX, fromY);
         Vector2f endPoint = getWorldPoint(toX, toY);
 
-        clampToWorld(startPoint, RADIUS);
-        clampToWorld(endPoint, RADIUS);
+        // clampToWorld(startPoint, RADIUS);
+        // clampToWorld(endPoint, RADIUS);
 
         LineBuffer lineBuffer = new LineBuffer();
 
@@ -43,9 +48,12 @@ public class Boundary {
                 lineBuffer.reset();
             }
         }
+        sprayParticles(lineBuffer);
+        lineBuffer.reset();
     }
 
     private void sprayParticles(LineBuffer lBuffer) {
+        Log.d(TAG, "sprayParticles");
         ByteBuffer buffer = lBuffer.getRawPointsBuffer();
 
         ParticleGroupDef pgd = new ParticleGroupDef();

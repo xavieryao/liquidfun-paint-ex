@@ -188,6 +188,14 @@ public class MainActivity extends Activity implements OnTouchListener {
         mSelected = (ImageView) findViewById(R.id.water);
         onClickTool(mSelected);
 
+        // Use particles to from boundaries.
+        mWorldView.postDelayed(new Runnable(){
+            @Override
+            public void run() {
+                addBoundaries();
+            }
+        },300);
+
         // Show the title view for 3 seconds
         LayoutInflater inflater = getLayoutInflater();
         inflater.inflate(R.layout.title, mRootLayout);
@@ -324,7 +332,6 @@ public class MainActivity extends Activity implements OnTouchListener {
      */
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        Toast.makeText(MainActivity.this, "Hello World", Toast.LENGTH_SHORT).show();
         boolean retValue = false;
         switch (v.getId()) {
             case R.id.button_restart:
@@ -378,19 +385,12 @@ public class MainActivity extends Activity implements OnTouchListener {
                     select(v, null);
                     break;
                 case MotionEvent.ACTION_UP:
-                /*
                     Renderer.getInstance().reset();
                     mController.reset();
                     // Could refactor out to a deselect() function, but this is
                     // the only place that needs it now.
                     View selecting = findViewById(R.id.selecting);
                     selecting.setVisibility(View.INVISIBLE);
-                */
-                    if (mBoundary == null) {
-                        mBoundary = new Boundary();
-                        mBoundary.setColor(0xeeeeee);
-                        mBoundary.drawLine(0,0,1,1);
-                    }
                     break;
                 default:
                     break;
@@ -474,5 +474,18 @@ public class MainActivity extends Activity implements OnTouchListener {
 
         // Actually select the view
         select(v, tool);
+    }
+
+    private void addBoundaries() {
+        if (mBoundary == null) {
+            mBoundary = new Boundary();
+            mBoundary.setColor(0xFF0000ee);
+            Log.e(TAG, "Running: mBoundary.drawLine");
+            mBoundary.drawLine(0,1,0,0); // left
+            mBoundary.drawLine(0,1,1,1); //top
+            mBoundary.drawLine(0f,0f,1f,1f); //cross
+            mBoundary.drawLine(0,0,1,0); //bottom
+            mBoundary.drawLine(1,0,0.9,0.9); // right
+        }
     }
 }

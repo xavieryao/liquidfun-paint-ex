@@ -142,9 +142,9 @@ public class Renderer extends Observable implements GLSurfaceView.Renderer {
                 final float fps = mFrames / ((float) time - mTime) * ONE_SEC;
                 float avefps = totalFrames / ((float) time - mStartTime) * ONE_SEC;
                 final int count = mParticleSystem.getParticleCount();
-                Log.d(TAG, fps + " fps (Now)");
-                Log.d(TAG, avefps + " fps (Average)");
-                Log.d(TAG, count + " particles");
+                // Log.d(TAG, fps + " fps (Now)");
+                // Log.d(TAG, avefps + " fps (Average)");
+                // Log.d(TAG, count + " particles");
                 mTime = time;
                 mFrames = 0;
 
