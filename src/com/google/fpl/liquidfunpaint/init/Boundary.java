@@ -1,4 +1,4 @@
-package com.google.fpl.liquidfunpaint;
+package com.google.fpl.liquidfunpaint.init;
 
 import com.google.fpl.liquidfunpaint.Renderer;
 import com.google.fpl.liquidfunpaint.util.Vector2f;

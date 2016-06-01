@@ -19,6 +19,7 @@ package com.google.fpl.liquidfunpaint;
 
 import com.google.fpl.liquidfunpaint.tool.Tool;
 import com.google.fpl.liquidfunpaint.tool.Tool.ToolType;
+import com.google.fpl.liquidfunpaint.init.Boundary;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -40,6 +41,8 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +52,8 @@ import java.util.List;
  * Implements the Android UI layout.
  */
 public class MainActivity extends Activity implements OnTouchListener {
+    private static String TAG = "MainActivity";
+
     static String sVersionName;
     private Controller mController;
     private GLSurfaceView mWorldView;
@@ -73,6 +78,7 @@ public class MainActivity extends Activity implements OnTouchListener {
     private boolean mUsingTool = false;
     private static final int ANIMATION_DURATION = 300;
 
+    private Boundary mBoundary;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +88,8 @@ public class MainActivity extends Activity implements OnTouchListener {
         System.loadLibrary("liquidfun");
         System.loadLibrary("liquidfun_jni");
 
+
+        Log.e(TAG, "Hello World");
         // Set the ToolBar layout
         setContentView(R.layout.tools_layout);
         mRootLayout = (RelativeLayout) findViewById(R.id.root);
@@ -316,6 +324,7 @@ public class MainActivity extends Activity implements OnTouchListener {
      */
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        Toast.makeText(MainActivity.this, "Hello World", Toast.LENGTH_SHORT).show();
         boolean retValue = false;
         switch (v.getId()) {
             case R.id.button_restart:
@@ -369,12 +378,19 @@ public class MainActivity extends Activity implements OnTouchListener {
                     select(v, null);
                     break;
                 case MotionEvent.ACTION_UP:
+                /*
                     Renderer.getInstance().reset();
                     mController.reset();
                     // Could refactor out to a deselect() function, but this is
                     // the only place that needs it now.
                     View selecting = findViewById(R.id.selecting);
                     selecting.setVisibility(View.INVISIBLE);
+                */
+                    if (mBoundary == null) {
+                        mBoundary = new Boundary();
+                        mBoundary.setColor(0xeeeeee);
+                        mBoundary.drawLine(0,0,1,1);
+                    }
                     break;
                 default:
                     break;
