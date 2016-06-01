@@ -28,7 +28,7 @@ public class RigidTool extends Tool {
         super(ToolType.RIGID);
         mParticleFlags = ParticleFlag.wallParticle |
                 ParticleFlag.barrierParticle |
-                ParticleFlag.repulsive;
+                ParticleFlag.repulsiveParticle;
         mParticleGroupFlags =
                 ParticleGroupFlag.rigidParticleGroup |
                 ParticleGroupFlag.solidParticleGroup;
