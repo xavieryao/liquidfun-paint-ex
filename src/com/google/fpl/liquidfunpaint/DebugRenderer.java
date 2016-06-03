@@ -29,6 +29,7 @@ import com.google.fpl.liquidfunpaint.shader.Texture;
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
+import android.util.Log;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -37,6 +38,8 @@ import java.nio.ByteOrder;
  * DebugRenderer for LiquidFun, extending the b2Draw class.
  */
 public class DebugRenderer extends Draw {
+    private static final String TAG = "DebugRenderer";
+
     private static final int DEBUG_CAPACITY = 20000;
     private static final float DEBUG_OPACITY = 0.8f;
     private static final float DEBUG_AXIS_SCALE = 0.3f;
@@ -145,6 +148,8 @@ public class DebugRenderer extends Draw {
 
     @Override
     public void drawCircle(Vec2 center, float radius, Color color) {
+        Log.d(TAG, "drawCircle");
+
         mCirclePositionBuffer.putFloat(center.getX());
         mCirclePositionBuffer.putFloat(center.getY());
         addColorToBuffer(mCircleColorBuffer, color);
@@ -153,13 +158,14 @@ public class DebugRenderer extends Draw {
                 Math.max(1.0f, Renderer.getInstance().sScreenWidth *
                 (2.0f * radius / Renderer.getInstance().sRenderWorldWidth));
         mCirclePointSizeBuffer.putFloat(pointSize);
+
     }
 
     @Override
     public void drawSolidCircle(
             Vec2 center, float radius, Vec2 axis, Color color) {
+        Log.d(TAG, "drawSolidCircle");
         drawCircle(center, radius, color);
-
         // Draw the axis line
         float centerX = center.getX();
         float centerY = center.getY();
@@ -177,6 +183,7 @@ public class DebugRenderer extends Draw {
     public void drawParticles(
             byte[] centers, float radius, byte[] colors, int count) {
         // Draw them as circles
+        /*
         mCirclePositionBuffer.put(centers);
         mCircleColorBuffer.put(colors);
 
@@ -186,6 +193,7 @@ public class DebugRenderer extends Draw {
         for (int i = 0; i < count; ++i) {
             mCirclePointSizeBuffer.putFloat(pointSize);
         }
+        */
     }
 
     /// Helper function for drawSegment to avoid making too many native objects
@@ -271,6 +279,7 @@ public class DebugRenderer extends Draw {
     }
 
     private void drawCircles(float[] transformFromWorld) {
+
         mCircleMaterial.beginRender();
 
         GLES20.glEnable(GLES20.GL_BLEND);
@@ -293,6 +302,7 @@ public class DebugRenderer extends Draw {
         GLES20.glDrawArrays(GLES20.GL_POINTS, 0, numElements);
 
         mCircleMaterial.endRender();
+
     }
 
     private void drawSegments(float[] transformFromWorld) {

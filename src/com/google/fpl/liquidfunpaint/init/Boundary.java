@@ -11,6 +11,10 @@ import com.google.fpl.liquidfun.ParticleGroupDef;
 import com.google.fpl.liquidfun.ParticleFlag;
 import com.google.fpl.liquidfun.ParticleGroupFlag;
 import com.google.fpl.liquidfun.ParticleColor;
+import com.google.fpl.liquidfun.World;
+import com.google.fpl.liquidfun.Body;
+import com.google.fpl.liquidfun.BodyDef;
+import com.google.fpl.liquidfun.PolygonShape;
 
 import java.nio.ByteBuffer;
 
@@ -52,8 +56,28 @@ public class Boundary {
         lineBuffer.reset();
     }
 
+    public void addPolygon() {
+        World world = Renderer.getInstance().acquireWorld();
+        try {
+            Body mBoundaryBody = null;
+            BodyDef bodyDef = new BodyDef();
+            PolygonShape boundaryPolygon = new PolygonShape();
+            Log.d(TAG, "create body");
+            mBoundaryBody = world.createBody(bodyDef);
+
+            boundaryPolygon.setAsBox(
+                    convCordX(0.1f),
+                    convCordY(0.1f),
+                    convCordX(0.5f),
+                    convCordY(0.5f),
+                    0.3f);
+            mBoundaryBody.createFixture(boundaryPolygon, 0.0f);
+        } finally {
+            Renderer.getInstance().releaseWorld();
+        }
+    }
+
     private void sprayParticles(LineBuffer lBuffer) {
-        Log.d(TAG, "sprayParticles");
         ByteBuffer buffer = lBuffer.getRawPointsBuffer();
 
         ParticleGroupDef pgd = new ParticleGroupDef();

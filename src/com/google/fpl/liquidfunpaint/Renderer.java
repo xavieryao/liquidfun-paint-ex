@@ -55,7 +55,7 @@ public class Renderer extends Observable implements GLSurfaceView.Renderer {
     public static final int MAX_PARTICLE_COUNT = 5000;
     public static final float PARTICLE_RADIUS = 0.06f;
     public static final float PARTICLE_REPULSIVE_STRENGTH = 0.5f;
-    public static final boolean DEBUG_DRAW = false;
+    public static final boolean DEBUG_DRAW = true;
 
     // Parameters for world simulation
     private static final float TIME_STEP = 1 / 60f; // 60 fps

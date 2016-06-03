@@ -518,6 +518,7 @@ public class MainActivity extends Activity implements OnTouchListener {
                 }
             }
             Log.d(TAG, "Shapes:" + shapes.size());
+            mBoundary.addPolygon();
         } finally {
             Renderer.getInstance().releaseWorld();
         }
