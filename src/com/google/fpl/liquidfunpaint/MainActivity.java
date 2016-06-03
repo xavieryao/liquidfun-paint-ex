@@ -500,15 +500,24 @@ public class MainActivity extends Activity implements OnTouchListener {
     private void doBadThings() {
         World w = Renderer.getInstance().acquireWorld();
         try {
-            List<Fixture> fixtures = new ArrayList<Fixture>();
-            List<Body> bodies = new ArrayList<Body>();
+            List<Fixture> fixtures = new ArrayList<>();
+            List<Body> bodies = new ArrayList<>();
+            List<Shape> shapes = new ArrayList<>();
             Body body = w.getBodyList();
             while(body != null) {
                 bodies.add(body);
                 body = body.getNext();
             }
             Log.d(TAG, "Bodies:" + bodies.size());
-            
+            for (Body b : bodies) {
+                Fixture f = b.getFixtureList();
+                while (f != null) {
+                    shapes.add(f.getShape());
+                    Log.d(TAG, "shape with type:" + f.getShape().getType());
+                    f = f.getNext();
+                }
+            }
+            Log.d(TAG, "Shapes:" + shapes.size());
         } finally {
             Renderer.getInstance().releaseWorld();
         }
