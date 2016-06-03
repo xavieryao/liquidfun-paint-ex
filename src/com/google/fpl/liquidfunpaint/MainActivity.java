@@ -21,6 +21,11 @@ import com.google.fpl.liquidfunpaint.tool.Tool;
 import com.google.fpl.liquidfunpaint.tool.Tool.ToolType;
 import com.google.fpl.liquidfunpaint.init.Boundary;
 
+import com.google.fpl.liquidfun.World;
+import com.google.fpl.liquidfun.Body;
+import com.google.fpl.liquidfun.Fixture;
+
+
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -378,6 +383,8 @@ public class MainActivity extends Activity implements OnTouchListener {
      * Called from OnTouchListener event.
      */
     public boolean onTouchReset(View v, MotionEvent event) {
+        doBadThings();
+        /*
         if (!mUsingTool) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -395,7 +402,7 @@ public class MainActivity extends Activity implements OnTouchListener {
                 default:
                     break;
             }
-        }
+        }*/
 
         return true;
     }
@@ -484,8 +491,23 @@ public class MainActivity extends Activity implements OnTouchListener {
             mBoundary.drawLine(0,1,0,0); // left
             mBoundary.drawLine(0,1,1,1); //top
             mBoundary.drawLine(0f,0f,1f,1f); //cross
-            mBoundary.drawLine(0,0,1,0); //bottom
-            mBoundary.drawLine(1,0,0.9,0.9); // right
+            mBoundary.drawLine(0,0,1,0f); //bottom
+            mBoundary.drawLine(1,0f,0.9f,0.9f); // right
+        }
+    }
+
+    private void doBadThings() {
+        World w = Renderer.getInstance().acquireWorld();
+        try {
+            List<Fixture> fixtures = new ArrayList<Fixture>();
+            List<Body> bodies = new ArrayList<Body>();
+            Body body = w.getBodyList();
+            while(body != null) {
+                bodies.add(body);
+                body = body.getNext();
+            }
+        } finally {
+            Renderer.getInstance().releaseWorld();
         }
     }
 }
