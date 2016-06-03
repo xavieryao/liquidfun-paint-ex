@@ -24,6 +24,7 @@ import com.google.fpl.liquidfunpaint.init.Boundary;
 import com.google.fpl.liquidfun.World;
 import com.google.fpl.liquidfun.Body;
 import com.google.fpl.liquidfun.Fixture;
+import com.google.fpl.liquidfun.Shape;
 
 
 import android.annotation.TargetApi;
@@ -506,6 +507,8 @@ public class MainActivity extends Activity implements OnTouchListener {
                 bodies.add(body);
                 body = body.getNext();
             }
+            Log.d(TAG, "Bodies:" + bodies.size());
+            
         } finally {
             Renderer.getInstance().releaseWorld();
         }
