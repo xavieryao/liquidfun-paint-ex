@@ -4,6 +4,7 @@ import com.google.fpl.liquidfunpaint.Renderer;
 import com.google.fpl.liquidfunpaint.util.Vector2f;
 import com.google.fpl.liquidfunpaint.init.LineBuffer;
 
+/*
 import com.google.fpl.liquidfun.Vec2;
 import com.google.fpl.liquidfun.ParticleSystem;
 import com.google.fpl.liquidfun.ParticleGroup;
@@ -15,6 +16,8 @@ import com.google.fpl.liquidfun.World;
 import com.google.fpl.liquidfun.Body;
 import com.google.fpl.liquidfun.BodyDef;
 import com.google.fpl.liquidfun.PolygonShape;
+*/
+import com.google.fpl.liquidfun.*;
 
 import java.nio.ByteBuffer;
 
@@ -61,16 +64,18 @@ public class Boundary {
         try {
             Body mBoundaryBody = null;
             BodyDef bodyDef = new BodyDef();
+            bodyDef.setType(BodyType.dynamicBody);
+            bodyDef.setFixedRotation(false);
             PolygonShape boundaryPolygon = new PolygonShape();
             Log.d(TAG, "create body");
             mBoundaryBody = world.createBody(bodyDef);
 
             boundaryPolygon.setAsBox(
-                    convCordX(0.1f),
-                    convCordY(0.1f),
-                    convCordX(0.5f),
-                    convCordY(0.5f),
-                    0.3f);
+                    convCordX(0.05f),
+                    convCordX(0.05f),
+                    convCordX(0.7f),
+                    convCordY(0.3f),
+                    0f);
             mBoundaryBody.createFixture(boundaryPolygon, 0.0f);
         } finally {
             Renderer.getInstance().releaseWorld();

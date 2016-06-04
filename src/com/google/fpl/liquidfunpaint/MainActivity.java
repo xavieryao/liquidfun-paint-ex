@@ -85,6 +85,7 @@ public class MainActivity extends Activity implements OnTouchListener {
     private static final int ANIMATION_DURATION = 300;
 
     private Boundary mBoundary;
+    private int mAddedPolygon = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -198,7 +199,7 @@ public class MainActivity extends Activity implements OnTouchListener {
         mWorldView.postDelayed(new Runnable(){
             @Override
             public void run() {
-                addBoundaries();
+                // addBoundaries();
             }
         },300);
 
@@ -341,6 +342,7 @@ public class MainActivity extends Activity implements OnTouchListener {
         boolean retValue = false;
         switch (v.getId()) {
             case R.id.button_restart:
+                doBadThings();
                 retValue = onTouchReset(v, event);
                 break;
             case R.id.world:
@@ -384,7 +386,6 @@ public class MainActivity extends Activity implements OnTouchListener {
      * Called from OnTouchListener event.
      */
     public boolean onTouchReset(View v, MotionEvent event) {
-        doBadThings();
         /*
         if (!mUsingTool) {
             switch (event.getAction()) {
@@ -484,6 +485,7 @@ public class MainActivity extends Activity implements OnTouchListener {
         select(v, tool);
     }
 
+
     private void addBoundaries() {
         if (mBoundary == null) {
             mBoundary = new Boundary();
@@ -498,6 +500,9 @@ public class MainActivity extends Activity implements OnTouchListener {
     }
 
     private void doBadThings() {
+        if (mBoundary == null) {
+            mBoundary = new Boundary();
+        }
         World w = Renderer.getInstance().acquireWorld();
         try {
             List<Fixture> fixtures = new ArrayList<>();
@@ -518,7 +523,10 @@ public class MainActivity extends Activity implements OnTouchListener {
                 }
             }
             Log.d(TAG, "Shapes:" + shapes.size());
-            mBoundary.addPolygon();
+            if (mAddedPolygon%3==0) {
+                mBoundary.addPolygon();
+            }
+            mAddedPolygon ++;
         } finally {
             Renderer.getInstance().releaseWorld();
         }

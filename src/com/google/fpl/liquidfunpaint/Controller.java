@@ -40,7 +40,7 @@ public class Controller implements OnTouchListener, SensorEventListener {
     private Tool mTool = null;
 
     private static final String TAG = "Controller";
-    private static final float GRAVITY = 10f;
+    private static final float GRAVITY = 9.8f;
 
     public Controller(Activity activity) {
         // Get rotation and set the vector
@@ -124,4 +124,3 @@ public class Controller implements OnTouchListener, SensorEventListener {
         Tool.resetAllTools();
     }
 }
-
