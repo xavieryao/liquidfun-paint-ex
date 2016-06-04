@@ -25,6 +25,7 @@
     <string name="water">Watery paint</string>
     <string name="rigid">Dry paint</string>
     <string name="pencil">Sticky paint</string>
+    <string name="box">Rigid box</string>
 
     <!-- Color palettes -->
     <string name="color_rigid_1">Honey</string>

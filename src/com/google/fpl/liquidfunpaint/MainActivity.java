@@ -386,7 +386,7 @@ public class MainActivity extends Activity implements OnTouchListener {
      * Called from OnTouchListener event.
      */
     public boolean onTouchReset(View v, MotionEvent event) {
-        /*
+
         if (!mUsingTool) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -404,7 +404,7 @@ public class MainActivity extends Activity implements OnTouchListener {
                 default:
                     break;
             }
-        }*/
+        }
 
         return true;
     }
@@ -477,6 +477,9 @@ public class MainActivity extends Activity implements OnTouchListener {
                 tool = ToolType.MOVE;
                 // Always close palettes for non-drawing tools
                 closePalette();
+                break;
+            case R.id.box:
+                tool = ToolType.BOX;
                 break;
             default:
         }

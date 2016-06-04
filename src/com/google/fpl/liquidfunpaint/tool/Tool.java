@@ -27,6 +27,7 @@ import com.google.fpl.liquidfunpaint.Renderer;
 import com.google.fpl.liquidfunpaint.util.Vector2f;
 
 import android.util.SparseArray;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -51,7 +52,7 @@ public abstract class Tool {
      * Type of tools
      */
     public enum ToolType {
-        MOVE, ERASER, WATER, PENCIL, RIGID,
+        MOVE, ERASER, WATER, PENCIL, RIGID, BOX
     }
 
     /**
@@ -106,6 +107,9 @@ public abstract class Tool {
         Tool rigidTool = new RigidTool();
         toolMap.put(ToolType.RIGID, rigidTool);
 
+        Tool boxTool = new BoxTool();
+        toolMap.put(ToolType.BOX, boxTool);
+
         return toolMap;
     }
 
@@ -153,6 +157,7 @@ public abstract class Tool {
     }
 
     public void onTouch(View v, MotionEvent e) {
+        Log.d(TAG, "onTouch");
         switch (e.getActionMasked()) {
           case MotionEvent.ACTION_DOWN:
           case MotionEvent.ACTION_POINTER_DOWN: {
