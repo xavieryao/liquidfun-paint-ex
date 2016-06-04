@@ -132,6 +132,7 @@ public class Renderer extends Observable implements GLSurfaceView.Renderer {
     @Override
     public void onDrawFrame(GL10 gl) {
         // Show the frame rate
+        /*
         if (BuildConfig.DEBUG) {
             long time = System.nanoTime();
             if (time - mTime > ONE_SEC) {
@@ -165,7 +166,7 @@ public class Renderer extends Observable implements GLSurfaceView.Renderer {
             mFrames++;
             totalFrames++;
         }
-
+        */
         update(TIME_STEP);
         render();
     }
