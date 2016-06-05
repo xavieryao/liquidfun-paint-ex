@@ -447,7 +447,7 @@
                 android:layout_marginBottom="@dimen/tool_margin_bottom"
                 android:clickable="true"
                 android:onClick="onClickTool"
-                android:src="@drawable/hand" />
+                android:src="@drawable/force" />
 
         <ImageView
             android:id="@+id/box"
@@ -459,7 +459,7 @@
             android:layout_marginBottom="@dimen/tool_margin_bottom"
             android:clickable="true"
             android:onClick="onClickTool"
-            android:src="@drawable/hand" />
+            android:src="@drawable/box" />
 
         <ImageView
             android:id="@+id/hand"
