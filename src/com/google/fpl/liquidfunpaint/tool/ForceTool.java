@@ -28,8 +28,6 @@ import android.view.View;
 public class ForceTool extends Tool {
     private final static String TAG = "ForceTool";
 
-    private float mH = 0.05f; // height
-    private float mW = 0.05f; // width
 
     public ForceTool() {
         super(ToolType.FORCE);
@@ -68,32 +66,31 @@ public class ForceTool extends Tool {
         }
     }
 
-    private float convCordX(float x) {
-        return Renderer.getInstance().sRenderWorldWidth * x;
-    }
-
-    private float convCordY(float y) {
-        return Renderer.getInstance().sRenderWorldHeight * y;
-    }
-
     private boolean testPoint(float x, float y) {
         Log.d(TAG, "test " + x + ", " + y);
         try {
             World w = Renderer.getInstance().acquireWorld();
             Vec2 vec = new Vec2(x,y);
             Body body = w.getBodyList();
-            Transform t = new Transform();
-            t.setIdentity();
+            Transform t;
             while(body != null) {
+                t = body.getTransform();
                 Fixture f = body.getFixtureList();
                 while (f != null) {
                     Shape s = f.getShape();
                     if (s.testPoint(t,vec)) {
+                        s.delete();
                         return true;
                     }
-                    f = f.getNext();
+                    Fixture next = f.getNext();
+                    s.delete();
+                    f.delete();
+                    f = next;
                 }
-                body = body.getNext();
+                Body next = body.getNext();
+                body.delete();
+                body = next;
+                t.delete();
             }
         } finally {
             Renderer.getInstance().releaseWorld();

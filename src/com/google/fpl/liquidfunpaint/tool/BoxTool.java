@@ -5,11 +5,7 @@ import com.google.fpl.liquidfunpaint.util.Vector2f;
 import com.google.fpl.liquidfunpaint.Renderer;
 import com.google.fpl.liquidfunpaint.tool.Tool;
 
-import com.google.fpl.liquidfun.World;
-import com.google.fpl.liquidfun.Body;
-import com.google.fpl.liquidfun.BodyDef;
-import com.google.fpl.liquidfun.BodyType;
-import com.google.fpl.liquidfun.PolygonShape;
+import com.google.fpl.liquidfun.*;
 
 import android.util.Log;
 import android.view.MotionEvent;
@@ -45,41 +41,40 @@ public class BoxTool extends Tool {
                       Renderer.getInstance().sRenderWorldHeight *
                           (v.getHeight() - screenY)
                       / v.getHeight());
-              addPolygon(worldPoint);
+              addPolygon(worldPoint,convSize(mH), convSize(mW));
               break;
           default:
               break;
         }
     }
 
-    public void addPolygon(Vector2f worldPoint) {
-        World world = Renderer.getInstance().acquireWorld();
+    public void addPolygon(Vector2f worldPoint, float h, float w) {
+        Log.d(TAG, "addPolygon, at" + worldPoint + " h:" + h + "w:" + w);
         try {
-            Body mBoundaryBody = null;
+            World world = Renderer.getInstance().acquireWorld();
+            Body body = null;
             BodyDef bodyDef = new BodyDef();
             bodyDef.setType(BodyType.dynamicBody);
             bodyDef.setFixedRotation(false);
             PolygonShape boundaryPolygon = new PolygonShape();
-            Log.d(TAG, "create body");
-            mBoundaryBody = world.createBody(bodyDef);
-
+            body = world.createBody(bodyDef);
+            Vec2 localPoint = body.getLocalPoint(new Vec2(worldPoint.x, worldPoint.y));
             boundaryPolygon.setAsBox(
-                    convCordX(mH),
-                    convCordX(mW),
-                    worldPoint.x,
-                    worldPoint.y,
+                    h,
+                    w,
+                    localPoint.getX(),
+                    localPoint.getY(),
                     0f); // TODO: rotate
-            mBoundaryBody.createFixture(boundaryPolygon, 0.0f);
+            localPoint.delete();
+            body.createFixture(boundaryPolygon, 0.0f);
+            body.delete();
+            bodyDef.delete();
         } finally {
             Renderer.getInstance().releaseWorld();
         }
     }
 
-    private float convCordX(float x) {
-        return Renderer.getInstance().sRenderWorldWidth * x;
-    }
-
-    private float convCordY(float y) {
-        return Renderer.getInstance().sRenderWorldHeight * y;
+    private float convSize(float size) {
+        return Renderer.getInstance().sRenderWorldHeight * size;
     }
 }

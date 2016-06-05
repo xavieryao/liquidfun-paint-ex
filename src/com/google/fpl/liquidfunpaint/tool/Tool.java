@@ -405,4 +405,13 @@ public abstract class Tool {
      */
     public void deactivate() {}
     public void activate() {}
+
+    protected float convCordX(float x, View v) {
+        return Renderer.getInstance().sRenderWorldWidth * x / v.getWidth();
+    }
+
+    protected float convCordY(float y, View v) {
+        return Renderer.getInstance().sRenderWorldHeight * y / v.getHeight();
+    }
+
 }
