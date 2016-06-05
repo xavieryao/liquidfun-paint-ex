@@ -65,9 +65,11 @@ public class BoxTool extends Tool {
                     localPoint.getX(),
                     localPoint.getY(),
                     0f); // TODO: rotate
-            localPoint.delete();
             body.createFixture(boundaryPolygon, 0.0f);
+            
+            localPoint.delete();
             body.delete();
+            boundaryPolygon.delete();
             bodyDef.delete();
         } finally {
             Renderer.getInstance().releaseWorld();
