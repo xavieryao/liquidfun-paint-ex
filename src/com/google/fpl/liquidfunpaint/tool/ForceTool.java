@@ -43,7 +43,7 @@ public class ForceTool extends Tool {
             float screenY = e.getY();
             float x = Renderer.getInstance().sRenderWorldWidth * screenX / v.getWidth();
             float y = Renderer.getInstance().sRenderWorldHeight * (v.getHeight() - screenY) / v.getHeight();
-            mTouchedBody = testPoint(x,y)
+            mTouchedBody = testPoint(x,y);
             boolean overlap = (mTouchedBody!=null);
             Log.d(TAG,"overlap:" + overlap);
             break;
@@ -68,11 +68,11 @@ public class ForceTool extends Tool {
         }
     }
 
-    private void handleMoveEvent(View v, MotionEvent e) {
+    private void handleMoveEvent(View v, MotionEvent ev) {
         final int historySize = ev.getHistorySize();
         final int pointerCount = ev.getPointerCount();
         for (int h = 0; h < historySize; h++) {
-            Log.d(TAGm "At time:"+ ev.getHistoricalEventTime(h));
+            Log.d(TAG, "At time:"+ ev.getHistoricalEventTime(h));
             for (int p = 0; p < pointerCount; p++) {
                 System.out.printf("  pointer %d: (%f,%f)",
                 ev.getPointerId(p), ev.getHistoricalX(p, h), ev.getHistoricalY(p, h));
