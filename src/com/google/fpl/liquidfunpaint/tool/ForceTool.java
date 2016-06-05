@@ -28,6 +28,7 @@ import android.view.View;
 public class ForceTool extends Tool {
     private final static String TAG = "ForceTool";
 
+    private Body mTouchedBody;
 
     public ForceTool() {
         super(ToolType.FORCE);
@@ -36,37 +37,55 @@ public class ForceTool extends Tool {
     @Override
     public void onTouch(View v, MotionEvent e) {
         switch (e.getActionMasked()) {
-            case MotionEvent.ACTION_DOWN:
-            case MotionEvent.ACTION_POINTER_DOWN:
-                float screenX = e.getX();
-                float screenY = e.getY();
-                float x = Renderer.getInstance().sRenderWorldWidth * screenX / v.getWidth();
-                float y = Renderer.getInstance().sRenderWorldHeight * (v.getHeight() - screenY) / v.getHeight();
-                boolean overlap = testPoint(x,y);
-                Log.d(TAG,"overlap:" + overlap);
-                break;
-            /*
-            case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_POINTER_UP:
-                Log.d(TAG, "onUp");
-                float screenX = e.getX();
-                float screenY = e.getY();
-                // convert point on screen to world point.
-                Vector2f worldPoint = new Vector2f(
-                    Renderer.getInstance().sRenderWorldWidth
-                        * screenX / v.getWidth(),
-                    Renderer.getInstance().sRenderWorldHeight *
-                        (v.getHeight() - screenY)
-                        / v.getHeight());
-                    addPolygon(worldPoint);
-                break;
-            */
-          default:
+        case MotionEvent.ACTION_DOWN:
+        case MotionEvent.ACTION_POINTER_DOWN:
+            float screenX = e.getX();
+            float screenY = e.getY();
+            float x = Renderer.getInstance().sRenderWorldWidth * screenX / v.getWidth();
+            float y = Renderer.getInstance().sRenderWorldHeight * (v.getHeight() - screenY) / v.getHeight();
+            mTouchedBody = testPoint(x,y)
+            boolean overlap = (mTouchedBody!=null);
+            Log.d(TAG,"overlap:" + overlap);
+            break;
+        case MotionEvent.ACTION_MOVE:
+            handleMoveEvent(v,e);
+            break;
+        case MotionEvent.ACTION_POINTER_UP:
+        case MotionEvent.ACTION_UP:
+            if (mTouchedBody!=null) {
+                mTouchedBody.delete();
+                mTouchedBody = null;
+            }
+            break;
+        case MotionEvent.ACTION_CANCEL:
+            if (mTouchedBody!=null) {
+                mTouchedBody.delete();
+                mTouchedBody = null;
+            }
+            break;
+        default:
               break;
         }
     }
 
-    private boolean testPoint(float x, float y) {
+    private void handleMoveEvent(View v, MotionEvent e) {
+        final int historySize = ev.getHistorySize();
+        final int pointerCount = ev.getPointerCount();
+        for (int h = 0; h < historySize; h++) {
+            Log.d(TAGm "At time:"+ ev.getHistoricalEventTime(h));
+            for (int p = 0; p < pointerCount; p++) {
+                System.out.printf("  pointer %d: (%f,%f)",
+                ev.getPointerId(p), ev.getHistoricalX(p, h), ev.getHistoricalY(p, h));
+            }
+        }
+        System.out.printf("At time %d:", ev.getEventTime());
+        for (int p = 0; p < pointerCount; p++) {
+            System.out.printf("  pointer %d: (%f,%f)",
+            ev.getPointerId(p), ev.getX(p), ev.getY(p));
+        }
+    }
+
+    private Body testPoint(float x, float y) {
         Log.d(TAG, "test " + x + ", " + y);
         try {
             World w = Renderer.getInstance().acquireWorld();
@@ -80,7 +99,7 @@ public class ForceTool extends Tool {
                     Shape s = f.getShape();
                     if (s.testPoint(t,vec)) {
                         s.delete();
-                        return true;
+                        return body;
                     }
                     Fixture next = f.getNext();
                     s.delete();
@@ -95,6 +114,12 @@ public class ForceTool extends Tool {
         } finally {
             Renderer.getInstance().releaseWorld();
         }
-        return false;
+        return null;
+    }
+
+    private class PointerInfo {
+        public PointerInfo() {
+
+        }
     }
 }
