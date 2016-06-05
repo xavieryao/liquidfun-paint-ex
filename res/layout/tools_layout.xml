@@ -436,6 +436,19 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/button_restart" />
 
+            <!-- Force -->
+            <ImageView
+                android:id="@+id/force"
+                android:contentDescription="@string/box"
+                android:layout_width="@dimen/tool_width"
+                android:layout_height="@dimen/tool_height"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/box"
+                android:layout_marginBottom="@dimen/tool_margin_bottom"
+                android:clickable="true"
+                android:onClick="onClickTool"
+                android:src="@drawable/hand" />
+
         <ImageView
             android:id="@+id/box"
             android:contentDescription="@string/box"

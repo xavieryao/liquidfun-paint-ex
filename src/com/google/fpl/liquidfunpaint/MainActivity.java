@@ -481,6 +481,9 @@ public class MainActivity extends Activity implements OnTouchListener {
             case R.id.box:
                 tool = ToolType.BOX;
                 break;
+            case R.id.force:
+                tool = ToolType.FORCE;
+                break;
             default:
         }
 

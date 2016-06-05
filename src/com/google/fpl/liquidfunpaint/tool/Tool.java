@@ -52,7 +52,7 @@ public abstract class Tool {
      * Type of tools
      */
     public enum ToolType {
-        MOVE, ERASER, WATER, PENCIL, RIGID, BOX
+        MOVE, ERASER, WATER, PENCIL, RIGID, BOX, FORCE
     }
 
     /**
@@ -110,6 +110,8 @@ public abstract class Tool {
         Tool boxTool = new BoxTool();
         toolMap.put(ToolType.BOX, boxTool);
 
+        Tool forceTool = new ForceTool();
+        toolMap.put(ToolType.FORCE, forceTool);
         return toolMap;
     }
 
@@ -157,7 +159,6 @@ public abstract class Tool {
     }
 
     public void onTouch(View v, MotionEvent e) {
-        Log.d(TAG, "onTouch");
         switch (e.getActionMasked()) {
           case MotionEvent.ACTION_DOWN:
           case MotionEvent.ACTION_POINTER_DOWN: {
