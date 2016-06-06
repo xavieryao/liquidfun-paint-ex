@@ -20,7 +20,7 @@ public class BoxTool extends Tool {
     private final static String TAG = "BoxTool";
 
     private float mH = 0.05f; // height
-    private float mW = 0.05f; // width
+    private float mW = 0.15f; // width
 
     public BoxTool() {
         super(ToolType.BOX);
@@ -55,7 +55,7 @@ public class BoxTool extends Tool {
             Body body = null;
             BodyDef bodyDef = new BodyDef();
             bodyDef.setType(BodyType.dynamicBody);
-            bodyDef.setFixedRotation(false);
+            // bodyDef.setFixedRotation(false);
             PolygonShape boundaryPolygon = new PolygonShape();
             body = world.createBody(bodyDef);
             Vec2 localPoint = body.getLocalPoint(new Vec2(worldPoint.x, worldPoint.y));
@@ -66,7 +66,7 @@ public class BoxTool extends Tool {
                     localPoint.getY(),
                     0f); // TODO: rotate
             body.createFixture(boundaryPolygon, 0.0f);
-            
+
             localPoint.delete();
             body.delete();
             boundaryPolygon.delete();

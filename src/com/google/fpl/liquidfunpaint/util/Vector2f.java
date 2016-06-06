@@ -75,4 +75,8 @@ public class Vector2f extends android.graphics.PointF {
         // (v0 + v1) / (segmentCount + 1)
         return v0.add(v1).mul(1 / (segmentCount + 1));
     }
+
+    public com.google.fpl.liquidfun.Vec2 toVec2() {
+        return new com.google.fpl.liquidfun.Vec2(this.x, this.y);
+    }
 }

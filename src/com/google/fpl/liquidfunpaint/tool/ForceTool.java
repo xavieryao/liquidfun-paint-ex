@@ -4,6 +4,7 @@ package com.google.fpl.liquidfunpaint.tool;
 import com.google.fpl.liquidfunpaint.util.Vector2f;
 import com.google.fpl.liquidfunpaint.Renderer;
 import com.google.fpl.liquidfunpaint.tool.Tool;
+import com.google.fpl.liquidfunpaint.util.LogF;
 
 import com.google.fpl.liquidfun.World;
 import com.google.fpl.liquidfun.Body;
@@ -20,6 +21,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.LinkedList;
+
 /**
  * Pencil tool
  * These are wall + barrier particles. To prevent leaking, they are all
@@ -27,8 +30,10 @@ import android.view.View;
  */
 public class ForceTool extends Tool {
     private final static String TAG = "ForceTool";
+    private final static float FACTOR = 10000f;
 
     private Body mTouchedBody;
+    private Vec2 mApplyPoint;
 
     public ForceTool() {
         super(ToolType.FORCE);
@@ -45,6 +50,9 @@ public class ForceTool extends Tool {
             float y = Renderer.getInstance().sRenderWorldHeight * (v.getHeight() - screenY) / v.getHeight();
             mTouchedBody = testPoint(x,y);
             boolean overlap = (mTouchedBody!=null);
+            if (overlap) {
+                mApplyPoint = new Vec2(x,y);
+            }
             Log.d(TAG,"overlap:" + overlap);
             break;
         case MotionEvent.ACTION_MOVE:
@@ -52,15 +60,14 @@ public class ForceTool extends Tool {
             break;
         case MotionEvent.ACTION_POINTER_UP:
         case MotionEvent.ACTION_UP:
-            if (mTouchedBody!=null) {
-                mTouchedBody.delete();
-                mTouchedBody = null;
-            }
-            break;
         case MotionEvent.ACTION_CANCEL:
             if (mTouchedBody!=null) {
                 mTouchedBody.delete();
                 mTouchedBody = null;
+            }
+            if (mApplyPoint!=null) {
+                mApplyPoint.delete();
+                mApplyPoint = null;
             }
             break;
         default:
@@ -71,17 +78,46 @@ public class ForceTool extends Tool {
     private void handleMoveEvent(View v, MotionEvent ev) {
         final int historySize = ev.getHistorySize();
         final int pointerCount = ev.getPointerCount();
-        for (int h = 0; h < historySize; h++) {
-            Log.d(TAG, "At time:"+ ev.getHistoricalEventTime(h));
-            for (int p = 0; p < pointerCount; p++) {
-                System.out.printf("  pointer %d: (%f,%f)",
-                ev.getPointerId(p), ev.getHistoricalX(p, h), ev.getHistoricalY(p, h));
-            }
+        if (historySize == 0) {
+            return;
         }
-        System.out.printf("At time %d:", ev.getEventTime());
-        for (int p = 0; p < pointerCount; p++) {
-            System.out.printf("  pointer %d: (%f,%f)",
-            ev.getPointerId(p), ev.getX(p), ev.getY(p));
+        if (historySize == 1) {
+            float prevX = ev.getHistoricalX(0,0);
+            float prevY = ev.getHistoricalY(0,0);
+            long prevTime = ev.getHistoricalEventTime(0);
+            float curX = ev.getX(0);
+            float curY = ev.getY(0);
+            long curTime = ev.getEventTime();
+            float dx = convCordX(curX - prevX, v);
+            float dy = -convCordY(curY - prevY, v);
+            float dt = curTime - prevTime;
+            Vec2 force = new Vec2(dx/dt*FACTOR, dy/dt*FACTOR);
+            LogF.d(TAG, "apply force:[%f, %f]", force.getX(), force.getY());
+            if (mTouchedBody != null) {
+                mTouchedBody.applyForce(force,mTouchedBody.getWorldPoint(mApplyPoint),true);
+            }
+            force.delete();
+        } else {
+            float prevX = ev.getHistoricalX(0, 0);
+            float prevY = ev.getHistoricalY(0, 0);
+            long prevTime = ev.getHistoricalEventTime(0);
+            for (int h = 1; h < historySize; h++) {
+                float curX = ev.getHistoricalX(0, h);
+                float curY = ev.getHistoricalY(0, h);
+                long curTime = ev.getHistoricalEventTime(h);
+                float dx = convCordX(curX - prevX, v);
+                float dy = -convCordY(curY - prevY, v);
+                float dt = curTime - prevTime;
+                Vec2 force = new Vec2(dx/dt*FACTOR, dy/dt*FACTOR);
+                LogF.d(TAG, "apply force:[%f, %f]", force.getX(), force.getY());
+                if (mTouchedBody != null) {
+                    mTouchedBody.applyForce(force,mTouchedBody.getWorldPoint(mApplyPoint), true);
+                }
+                prevX = curX;
+                prevY = curY;
+                prevTime = curTime;
+                force.delete();
+            }
         }
     }
 
@@ -99,6 +135,7 @@ public class ForceTool extends Tool {
                     Shape s = f.getShape();
                     if (s.testPoint(t,vec)) {
                         s.delete();
+                        // body.setAngularVelocity(3f);
                         return body;
                     }
                     Fixture next = f.getNext();
