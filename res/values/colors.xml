@@ -41,10 +41,13 @@
     <color name="color_water_11">#e7f39f</color>
     <color name="color_water_12">#f7eb83</color>
     <color name="splash_bg">#f8da96</color>
+    <color name="color_oil_1">#DD6D22</color>
+
     <item type="integer" name="num_colors">12</item>
 
     <item type="string" name="default_pencil_color">color_rigid_8</item>
     <item type="string" name="default_rigid_color">color_rigid_9</item>
     <item type="string" name="default_water_color">color_water_6</item>
+    <item type="string" name="default_oil_color">color_oil_1</item>
 
 </resources>

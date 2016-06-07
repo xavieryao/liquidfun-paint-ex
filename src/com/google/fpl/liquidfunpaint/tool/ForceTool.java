@@ -153,10 +153,4 @@ public class ForceTool extends Tool {
         }
         return null;
     }
-
-    private class PointerInfo {
-        public PointerInfo() {
-
-        }
-    }
 }

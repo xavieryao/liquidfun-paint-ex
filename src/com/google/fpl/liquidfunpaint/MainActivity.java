@@ -19,7 +19,6 @@ package com.google.fpl.liquidfunpaint;
 
 import com.google.fpl.liquidfunpaint.tool.Tool;
 import com.google.fpl.liquidfunpaint.tool.Tool.ToolType;
-import com.google.fpl.liquidfunpaint.init.Boundary;
 
 import com.google.fpl.liquidfun.World;
 import com.google.fpl.liquidfun.Body;
@@ -84,7 +83,6 @@ public class MainActivity extends Activity implements OnTouchListener {
     private boolean mUsingTool = false;
     private static final int ANIMATION_DURATION = 300;
 
-    private Boundary mBoundary;
     private int mAddedPolygon = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,18 +188,12 @@ public class MainActivity extends Activity implements OnTouchListener {
                 getColor(getString(R.string.default_rigid_color), "color"));
         Tool.getTool(ToolType.WATER).setColor(
                 getColor(getString(R.string.default_water_color), "color"));
+        Tool.getTool(ToolType.OIL).setColor(
+                getColor(getString(R.string.default_oil_color), "color"));
 
         // Initialize the first selected tool
         mSelected = (ImageView) findViewById(R.id.water);
         onClickTool(mSelected);
-
-        // Use particles to from boundaries.
-        mWorldView.postDelayed(new Runnable(){
-            @Override
-            public void run() {
-                // addBoundaries();
-            }
-        },300);
 
         // Show the title view for 3 seconds
         LayoutInflater inflater = getLayoutInflater();
@@ -468,6 +460,9 @@ public class MainActivity extends Activity implements OnTouchListener {
                 tool = ToolType.WATER;
                 togglePalette(v, mWaterColorPalette);
                 break;
+            case R.id.oil:
+                tool = ToolType.OIL;
+                break;
             case R.id.eraser:
                 tool = ToolType.ERASER;
                 // Always close palettes for non-drawing tools
@@ -491,24 +486,8 @@ public class MainActivity extends Activity implements OnTouchListener {
         select(v, tool);
     }
 
-
-    private void addBoundaries() {
-        if (mBoundary == null) {
-            mBoundary = new Boundary();
-            mBoundary.setColor(0xFF0000ee);
-            Log.e(TAG, "Running: mBoundary.drawLine");
-            mBoundary.drawLine(0,1,0,0); // left
-            mBoundary.drawLine(0,1,1,1); //top
-            mBoundary.drawLine(0f,0f,1f,1f); //cross
-            mBoundary.drawLine(0,0,1,0f); //bottom
-            mBoundary.drawLine(1,0f,0.9f,0.9f); // right
-        }
-    }
-
     private void doBadThings() {
-        if (mBoundary == null) {
-            mBoundary = new Boundary();
-        }
+
         World w = Renderer.getInstance().acquireWorld();
         try {
             List<Fixture> fixtures = new ArrayList<>();
@@ -529,9 +508,6 @@ public class MainActivity extends Activity implements OnTouchListener {
                 }
             }
             Log.d(TAG, "Shapes:" + shapes.size());
-            if (mAddedPolygon%3==0) {
-                mBoundary.addPolygon();
-            }
             mAddedPolygon ++;
         } finally {
             Renderer.getInstance().releaseWorld();

@@ -478,12 +478,24 @@
             android:contentDescription="@string/eraser"
             android:layout_width="@dimen/tool_width"
             android:layout_height="@dimen/tool_height"
-            android:layout_below="@+id/water"
+            android:layout_below="@+id/oil"
             android:layout_alignParentLeft="true"
             android:layout_marginBottom="@dimen/tool_margin_bottom"
             android:clickable="true"
             android:onClick="onClickTool"
             android:src="@drawable/eraser" />
+
+            <ImageView
+                android:id="@+id/oil"
+                android:contentDescription="@string/water"
+                android:layout_width="@dimen/tool_width"
+                android:layout_height="@dimen/tool_height"
+                android:layout_below="@+id/water"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="@dimen/tool_margin_bottom"
+                android:clickable="true"
+                android:onClick="onClickTool"
+                android:src="@drawable/water_6" />
 
         <ImageView
             android:id="@+id/water"
