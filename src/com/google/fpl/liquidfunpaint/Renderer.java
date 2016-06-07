@@ -62,6 +62,7 @@ public class Renderer extends Observable implements GLSurfaceView.Renderer {
     private static final int VELOCITY_ITERATIONS = 6;
     private static final int POSITION_ITERATIONS = 2;
     private static final int PARTICLE_ITERATIONS = 5;
+    private static final float PARTICLE_DENSITY = 9f;
     private static final float BOUNDARY_THICKNESS = 20.0f;
 
     // Public static constants; variables for reuse
@@ -297,6 +298,7 @@ public class Renderer extends Observable implements GLSurfaceView.Renderer {
             ParticleSystemDef psDef = new ParticleSystemDef();
             psDef.setRadius(PARTICLE_RADIUS);
             psDef.setRepulsiveStrength(PARTICLE_REPULSIVE_STRENGTH);
+            psDef.setDensity(PARTICLE_DENSITY);
             mParticleSystem = mWorld.createParticleSystem(psDef);
             mParticleSystem.setMaxParticleCount(MAX_PARTICLE_COUNT);
             psDef.delete();
