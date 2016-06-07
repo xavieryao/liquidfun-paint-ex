@@ -26,9 +26,7 @@ import com.google.fpl.liquidfun.ParticleGroupFlag;
 public class RigidTool extends Tool {
     public RigidTool() {
         super(ToolType.RIGID);
-        mParticleFlags = ParticleFlag.wallParticle |
-                ParticleFlag.barrierParticle |
-                ParticleFlag.repulsiveParticle;
+        mParticleFlags = ParticleFlag.repulsiveParticle;
         mParticleGroupFlags =
                 ParticleGroupFlag.rigidParticleGroup |
                 ParticleGroupFlag.solidParticleGroup;
