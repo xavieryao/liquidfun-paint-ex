@@ -64,8 +64,8 @@ public class BoxTool extends Tool {
                     w,
                     localPoint.getX(),
                     localPoint.getY(),
-                    0f); // TODO: rotate
-            body.createFixture(boundaryPolygon, 0.0f);
+                    0f); 
+            body.createFixture(boundaryPolygon, 10.0f);
 
             localPoint.delete();
             body.delete();
