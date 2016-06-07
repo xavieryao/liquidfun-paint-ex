@@ -94,7 +94,7 @@ public class ForceTool extends Tool {
             Vec2 force = new Vec2(dx/dt*FACTOR, dy/dt*FACTOR);
             LogF.d(TAG, "apply force:[%f, %f]", force.getX(), force.getY());
             if (mTouchedBody != null) {
-                mTouchedBody.applyForce(force,mTouchedBody.getWorldPoint(new Vec2(1,1)),true);
+                mTouchedBody.applyForce(force,mTouchedBody.getWorldPoint(mApplyPoint),true);
             }
             force.delete();
         } else {
