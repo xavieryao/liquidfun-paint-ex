@@ -25,6 +25,7 @@ import org.papdt.liquidfunpaint.shader.Material;
 import org.papdt.liquidfunpaint.shader.Material.AttributeInfo;
 import org.papdt.liquidfunpaint.shader.ShaderProgram;
 import org.papdt.liquidfunpaint.shader.Texture;
+import org.papdt.liquidfunpaint.ExtendedRendererHelper;
 
 import android.content.Context;
 import android.opengl.GLES20;
@@ -241,7 +242,7 @@ public class DebugRenderer extends Draw {
             resetAllBuffers();
 
             // This captures everything we need to draw into buffers
-            world.drawDebugData();
+            ExtendedRendererHelper.getInstance().drawIntoBuffer();
 
             GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
             GLES20.glViewport(

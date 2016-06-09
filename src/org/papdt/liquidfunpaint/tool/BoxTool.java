@@ -21,6 +21,9 @@ public class BoxTool extends Tool {
 
     private float mH = 0.05f; // height
     private float mW = 0.15f; // width
+    private float mFriction = 0.5f;
+    private float mRestitution = 0.5f;
+    private float mDensity = 10.0f;
 
     public BoxTool() {
         super(ToolType.BOX);
@@ -65,8 +68,15 @@ public class BoxTool extends Tool {
                     localPoint.getX(),
                     localPoint.getY(),
                     0f);
-            body.createFixture(boundaryPolygon, 10.0f);
+            FixtureDef fd = new FixtureDef();
+            fd.setShape(boundaryPolygon);
+            fd.setFriction(mFriction);
+            fd.setRestitution(mRestitution);
+            fd.setDensity(mDensity);
+            fd.setColor(mFillColor);
+            body.createFixture(fd);
 
+            fd.delete();
             localPoint.delete();
             body.delete();
             boundaryPolygon.delete();

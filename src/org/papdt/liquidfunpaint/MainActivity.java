@@ -389,12 +389,10 @@ public class MainActivity extends Activity implements OnTouchListener {
             case R.id.eraser:
                 tool = ToolType.ERASER;
                 // Always close palettes for non-drawing tools
-                closePalette();
                 break;
             case R.id.hand:
                 tool = ToolType.MOVE;
                 // Always close palettes for non-drawing tools
-                closePalette();
                 break;
             case R.id.box:
                 tool = ToolType.BOX;

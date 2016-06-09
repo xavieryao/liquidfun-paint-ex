@@ -76,6 +76,8 @@ public abstract class Tool {
     protected EnumSet<ToolOperation> mOperations =
             EnumSet.allOf(ToolOperation.class);
 
+    protected int mFillColor;
+
     // member native (C++) variables
     protected ParticleColor mColor = new ParticleColor();
     protected Vec2 mVelocity = new Vec2(0, 0);
@@ -147,6 +149,7 @@ public abstract class Tool {
     }
 
     public void setColor (int color) {
+        mFillColor = color;
         // Convert ABGR back into ParticleColor
         // Box2D doesn't have this functionality,
         // check why color is stored as an int to begin with.
