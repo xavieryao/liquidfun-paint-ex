@@ -33,13 +33,14 @@ public class ExtendedRendererHelper {
                     short b = (short) (color >> 16 & 0xFF);
                     short g = (short) (color >> 8 & 0xFF);
                     short r = (short) (color & 0xFF);
-                    world.drawShape(fixture, transform, new Color(r,g,b));
+                    Color c = new Color(r,g,b);
+                    world.drawShape(fixture, transform, c);
                     // do things
                     Fixture nextFixture = fixture.getNext();
                     fixture.delete();
                     fixture = nextFixture;
                 }
-
+                // perhaps delete c?
                 transform.delete();
                 Body nextBody = body.getNext();
                 body.delete();
