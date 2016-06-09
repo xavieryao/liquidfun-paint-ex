@@ -12,9 +12,9 @@ import org.papdt.liquidfunpaint.Controller;
 
 import org.papdt.liquidfunpaint.R;
 
-public class PencilPalette extends Palette {
-    public PencilPalette(Controller c) {
-        super(c);
+public class ColorPalette extends Palette {
+    public ColorPalette(Controller c, int initialColor) {
+        super(c,initialColor);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class PencilPalette extends Palette {
         return ColorPickerDialogBuilder
             .with(getActivity())
             .setTitle(getString(R.string.pencil))
-            .initialColor(getResources().getColor(R.color.color_rigid_3))
+            .initialColor(mColor)
             .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
             .density(12)
             .setPositiveButton(getString(android.R.string.ok), new ColorPickerClickListener() {

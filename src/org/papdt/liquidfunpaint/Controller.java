@@ -101,6 +101,9 @@ public class Controller implements OnTouchListener, SensorEventListener {
     }
 
     public void setColor(int color) {
+        int red = (color >> 16) & 0xFF;
+        int blue = (color << 16) & 0xFF0000;
+        color = (color & 0xFF00FF00) | red | blue;
         if (mTool != null) {
             mTool.setColor(color);
         }

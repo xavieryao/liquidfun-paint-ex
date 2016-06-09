@@ -15,23 +15,25 @@ public abstract class Palette extends DialogFragment implements DialogInterface.
     protected static String TAG = "Palette";
     protected View mDialogView;
     protected Controller mController;
+    protected int mColor;
 
     protected abstract View inflateView(LayoutInflater inflater);
     protected abstract void onApply();
 
-    public Palette(Controller c) {
+    public Palette(Controller c, int color) {
         mController = c;
+        mColor = color;
     }
 
     public void openPalette(FragmentManager manager) {
-        if (mDialogView == null) {
-            mDialogView = inflateView(getActivity().getLayoutInflater());
-        }
         this.show(manager, TAG);
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        if (mDialogView == null) {
+            mDialogView = inflateView(getActivity().getLayoutInflater());
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(mDialogView)
             .setPositiveButton(android.R.string.ok, this)
@@ -51,6 +53,9 @@ public abstract class Palette extends DialogFragment implements DialogInterface.
     }
 
     public void closePalette() {
-        getDialog().cancel();
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            dialog.cancel();
+        }
     }
 }

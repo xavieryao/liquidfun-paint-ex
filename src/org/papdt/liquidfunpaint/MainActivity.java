@@ -19,6 +19,8 @@ package org.papdt.liquidfunpaint;
 
 import org.papdt.liquidfunpaint.tool.Tool;
 import org.papdt.liquidfunpaint.tool.Tool.ToolType;
+import org.papdt.liquidfunpaint.palette.ColorPalette;
+import org.papdt.liquidfunpaint.palette.Palette;
 
 import com.google.fpl.liquidfun.World;
 import com.google.fpl.liquidfun.Body;
@@ -51,6 +53,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.EnumMap;
 
 /**
  * MainActivity for Splashpaint
@@ -65,23 +68,20 @@ public class MainActivity extends Activity implements OnTouchListener {
 
     private RelativeLayout mRootLayout;
 
-    // Mapping from ImageView to actual RGB values
-    private SparseIntArray mColorMap;
-    // Mapping from ImageView of color palette to the images for Tools
-    private SparseIntArray mPencilImageMap;
-    private SparseIntArray mRigidImageMap;
-    private SparseIntArray mWaterImageMap;
-    // List of ImageView of color palettes
-    private List<View> mRigidColorPalette;
-    private List<View> mWaterColorPalette;
-
     // The image view of the selected tool
     private ImageView mSelected;
     // The current open palette
-    private List<View> mOpenPalette = null;
+    private Palette mOpenPalette = null;
 
     private boolean mUsingTool = false;
     private static final int ANIMATION_DURATION = 300;
+
+    private Palette mPencilPalette;
+    private Palette mRigidPalette;
+    private Palette mOilPalette;
+    private Palette mWaterPalette;
+    private Palette mBoxPalette;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,62 +97,6 @@ public class MainActivity extends Activity implements OnTouchListener {
         // Set the ToolBar layout
         setContentView(R.layout.tools_layout);
         mRootLayout = (RelativeLayout) findViewById(R.id.root);
-
-        mColorMap = new SparseIntArray();
-        mPencilImageMap = new SparseIntArray();
-        mRigidImageMap = new SparseIntArray();
-        mWaterImageMap = new SparseIntArray();
-        mRigidColorPalette = new ArrayList<View>();
-        mWaterColorPalette = new ArrayList<View>();
-        String pencilPrefix = getString(R.string.pencil_prefix);
-        String rigidPrefix = getString(R.string.rigid_prefix);
-        String waterPrefix = getString(R.string.water_prefix);
-        String rigidColorPrefix = getString(R.string.rigid_color_prefix);
-        String waterColorPrefix = getString(R.string.water_color_prefix);
-
-        Resources r = getResources();
-        // Look up all the different colors
-        for (int i = 1; i <= r.getInteger(R.integer.num_colors); ++i) {
-            // Get color palette for rigid/pencil tools
-            // 1) Add color RGB values to mColorMap
-            // 2) Add appropriate images for tool
-            // 3) Add the color palette view to the color palette list
-            int viewId = r.getIdentifier(
-                    rigidColorPrefix + i, "id", getPackageName());
-            mColorMap.append(
-                    viewId, getColor(rigidColorPrefix + i, "color"));
-            mPencilImageMap.append(
-                    viewId, r.getIdentifier(pencilPrefix + i,
-                                            "drawable",
-                                            getPackageName()));
-            mRigidImageMap.append(
-                    viewId, r.getIdentifier(rigidPrefix + i,
-                                            "drawable",
-                                            getPackageName()));
-            mRigidColorPalette.add(findViewById(viewId));
-
-            // Get color palette for water tool
-            // 1) Add color RGB values to mColorMap
-            // 2) Add appropriate images for tool
-            // 3) Add the color palette view to the color palette list
-            viewId = r.getIdentifier(
-                    waterColorPrefix + i, "id", getPackageName());
-            mColorMap.append(
-                    viewId, getColor(waterColorPrefix + i, "color"));
-            mWaterImageMap.append(
-                    viewId, r.getIdentifier(waterPrefix + i,
-                                            "drawable",
-                                            getPackageName()));
-            mWaterColorPalette.add(findViewById(viewId));
-        }
-
-        // Add the ending piece to both palettes
-        int paletteEndViewId = r.getIdentifier(
-                rigidColorPrefix + "end", "id", getPackageName());
-        mRigidColorPalette.add(findViewById(paletteEndViewId));
-        paletteEndViewId = r.getIdentifier(
-                waterColorPrefix + "end", "id", getPackageName());
-        mWaterColorPalette.add(findViewById(paletteEndViewId));
 
         // Set the restart button's listener
         findViewById(R.id.button_restart).setOnTouchListener(this);
@@ -182,17 +126,18 @@ public class MainActivity extends Activity implements OnTouchListener {
 
         // Set default tool colors
         Tool.getTool(ToolType.PENCIL).setColor(
-                getColor(getString(R.string.default_pencil_color), "color"));
+                getABGRColor(getString(R.string.default_pencil_color), "color"));
         Tool.getTool(ToolType.RIGID).setColor(
-                getColor(getString(R.string.default_rigid_color), "color"));
+                getABGRColor(getString(R.string.default_rigid_color), "color"));
         Tool.getTool(ToolType.WATER).setColor(
-                getColor(getString(R.string.default_water_color), "color"));
+                getABGRColor(getString(R.string.default_water_color), "color"));
         Tool.getTool(ToolType.OIL).setColor(
-                getColor(getString(R.string.default_oil_color), "color"));
+                getABGRColor(getString(R.string.default_oil_color), "color"));
+
+        initPalette();
 
         // Initialize the first selected tool
         mSelected = (ImageView) findViewById(R.id.water);
-        onClickTool(mSelected);
 
         // Show the title view for 3 seconds
         LayoutInflater inflater = getLayoutInflater();
@@ -254,9 +199,16 @@ public class MainActivity extends Activity implements OnTouchListener {
         mWorldView.onPause();
     }
 
-    private void togglePalette(View selectedTool, List<View> palette) {
+    private void initPalette() {
+        mPencilPalette = new ColorPalette(mController,getColor(getString(R.string.default_pencil_color), "color"));
+        mRigidPalette = new ColorPalette(mController,getColor(getString(R.string.default_rigid_color), "color"));
+        mWaterPalette = new ColorPalette(mController,getColor(getString(R.string.default_water_color), "color"));
+        mOilPalette = new ColorPalette(mController,getColor(getString(R.string.default_oil_color), "color"));
+    }
+
+    private void togglePalette(View selectedTool, Palette palette) {
         // Save the previously opened palette as closePalette() will clear it.
-        List<View> prevOpenPalette = mOpenPalette;
+        Palette prevOpenPalette = mOpenPalette;
 
         // Always close the palette.
         closePalette();
@@ -269,35 +221,14 @@ public class MainActivity extends Activity implements OnTouchListener {
         }
     }
 
-    private void openPalette(List<View> palette) {
-        if (mOpenPalette == null) {
-            float d = getResources().getDimension(R.dimen.color_width);
-            for (int i = 0; i < palette.size(); i++) {
-                Animation slideIn =
-                        new TranslateAnimation(-d * (i + 1), 0, 0, 0);
-                slideIn.setDuration(ANIMATION_DURATION);
-
-                View view = palette.get(i);
-                view.setVisibility(View.VISIBLE);
-                view.setClickable(true);
-                view.startAnimation(slideIn);
-            }
-        }
+    private void openPalette(Palette palette) {
+        palette.openPalette(getFragmentManager());
         mOpenPalette = palette;
     }
 
     private void closePalette() {
-        if (mOpenPalette != null) {
-            float d = getResources().getDimension(R.dimen.color_width);
-            for (int i = 0; i < mOpenPalette.size(); i++) {
-                View view = mOpenPalette.get(i);
-                Animation slideOut =
-                        new TranslateAnimation(0, -d * (i + 1), 0, 0);
-                slideOut.setDuration(ANIMATION_DURATION);
-                view.startAnimation(slideOut);
-                view.setVisibility(View.GONE);
-            }
-        }
+        if (mOpenPalette != null)
+            mOpenPalette.closePalette();
         mOpenPalette = null;
     }
 
@@ -315,7 +246,7 @@ public class MainActivity extends Activity implements OnTouchListener {
         selecting.setVisibility(View.VISIBLE);
     }
 
-    private int getColor(String name, String defType) {
+    private int getABGRColor(String name, String defType) {
         Resources r = getResources();
         int id = r.getIdentifier(name, defType, getPackageName());
         int color = r.getColor(id);
@@ -323,6 +254,12 @@ public class MainActivity extends Activity implements OnTouchListener {
         int red = (color >> 16) & 0xFF;
         int blue = (color << 16) & 0xFF0000;
         return (color & 0xFF00FF00) | red | blue;
+    }
+
+    private int getColor(String name, String defType) {
+        Resources r = getResources();
+        int id = r.getIdentifier(name, defType, getPackageName());
+        return r.getColor(id);
     }
 
     /**
@@ -415,22 +352,8 @@ public class MainActivity extends Activity implements OnTouchListener {
         if (mUsingTool) {
             return;
         }
-        int color = mColorMap.get(v.getId());
-        mController.setColor(color);
-        switch (mSelected.getId()) {
-            case R.id.pencil:
-                mSelected.setImageResource(
-                      mPencilImageMap.get(v.getId()));
-                break;
-            case R.id.rigid:
-                mSelected.setImageResource(
-                      mRigidImageMap.get(v.getId()));
-                break;
-            case R.id.water:
-                mSelected.setImageResource(
-                      mWaterImageMap.get(v.getId()));
-                break;
-        }
+        // int color = mColorMap.get(v.getId());
+        // mController.setColor(color);
         // Close the palette on choosing a color
         closePalette();
     }
@@ -449,18 +372,19 @@ public class MainActivity extends Activity implements OnTouchListener {
         switch (v.getId()) {
             case R.id.pencil:
                 tool = ToolType.PENCIL;
-                togglePalette(v, mRigidColorPalette);
+                togglePalette(v, mPencilPalette);
                 break;
             case R.id.rigid:
                 tool = ToolType.RIGID;
-                togglePalette(v, mRigidColorPalette);
+                togglePalette(v, mRigidPalette);
                 break;
             case R.id.water:
                 tool = ToolType.WATER;
-                togglePalette(v, mWaterColorPalette);
+                togglePalette(v, mWaterPalette);
                 break;
             case R.id.oil:
                 tool = ToolType.OIL;
+                togglePalette(v, mOilPalette);
                 break;
             case R.id.eraser:
                 tool = ToolType.ERASER;
