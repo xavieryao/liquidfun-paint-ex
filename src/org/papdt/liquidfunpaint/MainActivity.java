@@ -83,7 +83,6 @@ public class MainActivity extends Activity implements OnTouchListener {
     private boolean mUsingTool = false;
     private static final int ANIMATION_DURATION = 300;
 
-    private int mAddedPolygon = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -508,7 +507,6 @@ public class MainActivity extends Activity implements OnTouchListener {
                 }
             }
             Log.d(TAG, "Shapes:" + shapes.size());
-            mAddedPolygon ++;
         } finally {
             Renderer.getInstance().releaseWorld();
         }
