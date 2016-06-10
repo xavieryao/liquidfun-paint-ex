@@ -133,6 +133,8 @@ public class MainActivity extends Activity implements OnTouchListener {
                 getABGRColor(getString(R.string.default_water_color), "color"));
         Tool.getTool(ToolType.OIL).setColor(
                 getABGRColor(getString(R.string.default_oil_color), "color"));
+        Tool.getTool(ToolType.BOX).setColor(
+                getABGRColor(getString(R.string.default_oil_color), "color"));
 
         initPalette();
 
@@ -204,6 +206,7 @@ public class MainActivity extends Activity implements OnTouchListener {
         mRigidPalette = new ColorPalette(mController,getColor(getString(R.string.default_rigid_color), "color"));
         mWaterPalette = new ColorPalette(mController,getColor(getString(R.string.default_water_color), "color"));
         mOilPalette = new ColorPalette(mController,getColor(getString(R.string.default_oil_color), "color"));
+        mBoxPalette = new ColorPalette(mController,getColor(getString(R.string.default_oil_color), "color"));
     }
 
     private void togglePalette(View selectedTool, Palette palette) {
@@ -396,6 +399,7 @@ public class MainActivity extends Activity implements OnTouchListener {
                 break;
             case R.id.box:
                 tool = ToolType.BOX;
+                togglePalette(v, mBoxPalette);
                 break;
             case R.id.force:
                 tool = ToolType.FORCE;
