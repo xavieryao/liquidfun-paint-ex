@@ -20,6 +20,7 @@ package org.papdt.liquidfunpaint;
 import org.papdt.liquidfunpaint.tool.Tool;
 import org.papdt.liquidfunpaint.tool.Tool.ToolType;
 import org.papdt.liquidfunpaint.palette.ColorPalette;
+import org.papdt.liquidfunpaint.palette.ScalePalette;
 import org.papdt.liquidfunpaint.palette.Palette;
 
 import com.google.fpl.liquidfun.World;
@@ -208,7 +209,7 @@ public class MainActivity extends Activity implements OnTouchListener {
         mRigidPalette = new ColorPalette(mController,getColor(getString(R.string.default_rigid_color), "color"));
         mWaterPalette = new ColorPalette(mController,getColor(getString(R.string.default_water_color), "color"));
         mOilPalette = new ColorPalette(mController,getColor(getString(R.string.default_oil_color), "color"));
-        mBoxPalette = new ColorPalette(mController,getColor(getString(R.string.default_oil_color), "color"));
+        mBoxPalette = new ScalePalette(mController,getColor(getString(R.string.default_oil_color), "color"));
     }
 
     private void togglePalette(View selectedTool, Palette palette) {

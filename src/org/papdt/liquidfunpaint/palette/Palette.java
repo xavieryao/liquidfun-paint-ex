@@ -31,9 +31,7 @@ public abstract class Palette extends DialogFragment implements DialogInterface.
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        if (mDialogView == null) {
-            mDialogView = inflateView(getActivity().getLayoutInflater());
-        }
+        mDialogView = inflateView(getActivity().getLayoutInflater());
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(mDialogView)
             .setPositiveButton(android.R.string.ok, this)
