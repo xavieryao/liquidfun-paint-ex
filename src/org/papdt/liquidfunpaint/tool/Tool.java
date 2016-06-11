@@ -52,7 +52,7 @@ public abstract class Tool {
      * Type of tools
      */
     public enum ToolType {
-        MOVE, ERASER, WATER, OIL, PENCIL, RIGID, BOX, FORCE
+        MOVE, ERASER, WATER, OIL, PENCIL, RIGID, BOX, FORCE, BALL
     }
 
     /**
@@ -114,6 +114,9 @@ public abstract class Tool {
 
         Tool oilTool = new OilTool();
         toolMap.put(ToolType.OIL, oilTool);
+
+        Tool ballTool = new BallTool();
+        toolMap.put(ToolType.BALL, ballTool);
 
         Tool pencilTool = new PencilTool();
         toolMap.put(ToolType.PENCIL, pencilTool);

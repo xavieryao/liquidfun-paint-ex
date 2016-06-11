@@ -28,7 +28,7 @@
              android:paddingLeft="10dp"
              android:paddingRight="10dp"
              android:textColor="#FFFFFF"
-             android:text="@string/raduis"
+             android:text="@string/radius"
              />
              <SeekBar
                  android:layout_width="match_parent"

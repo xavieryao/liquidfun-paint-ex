@@ -21,6 +21,7 @@ import org.papdt.liquidfunpaint.tool.Tool;
 import org.papdt.liquidfunpaint.tool.Tool.ToolType;
 import org.papdt.liquidfunpaint.palette.ColorPalette;
 import org.papdt.liquidfunpaint.palette.ScalePalette;
+import org.papdt.liquidfunpaint.palette.RadiusPalette;
 import org.papdt.liquidfunpaint.palette.Palette;
 
 import com.google.fpl.liquidfun.World;
@@ -83,6 +84,7 @@ public class MainActivity extends Activity implements OnTouchListener {
     private Palette mOilPalette;
     private Palette mWaterPalette;
     private Palette mBoxPalette;
+    private Palette mBallPalette;
 
 
     @Override
@@ -137,6 +139,8 @@ public class MainActivity extends Activity implements OnTouchListener {
         Tool.getTool(ToolType.OIL).setColor(
                 getABGRColor(getString(R.string.default_oil_color), "color"));
         Tool.getTool(ToolType.BOX).setColor(
+                getABGRColor(getString(R.string.default_oil_color), "color"));
+        Tool.getTool(ToolType.BALL).setColor(
                 getABGRColor(getString(R.string.default_oil_color), "color"));
 
         initPalette();
@@ -210,6 +214,7 @@ public class MainActivity extends Activity implements OnTouchListener {
         mWaterPalette = new ColorPalette(mController,getColor(getString(R.string.default_water_color), "color"));
         mOilPalette = new ColorPalette(mController,getColor(getString(R.string.default_oil_color), "color"));
         mBoxPalette = new ScalePalette(mController,getColor(getString(R.string.default_oil_color), "color"));
+        mBallPalette = new RadiusPalette(mController,getColor(getString(R.string.default_oil_color), "color"));
     }
 
     private void togglePalette(View selectedTool, Palette palette) {
@@ -403,6 +408,10 @@ public class MainActivity extends Activity implements OnTouchListener {
             case R.id.box:
                 tool = ToolType.BOX;
                 togglePalette(v, mBoxPalette);
+                break;
+            case R.id.ball:
+                tool = ToolType.BALL;
+                togglePalette(v, mBallPalette);
                 break;
             case R.id.force:
                 tool = ToolType.FORCE;

@@ -28,8 +28,8 @@ public class RadiusPalette extends Palette {
 
     @Override
     protected View inflateView(LayoutInflater inflater) {
-        View v = inflater.inflate(R.layout.scale_palette, null);
-        mSbRadius = (Seekbar) v.findViewById(R.id.sb_r);
+        View v = inflater.inflate(R.layout.radius_palette, null);
+        mSbRadius = (SeekBar) v.findViewById(R.id.sb_r);
         mSbDensity = (SeekBar) v.findViewById(R.id.sb_density);
         mSbRadius.setProgress(mRadiusValue);
         mSbDensity.setProgress(mDensityValue);
@@ -46,7 +46,7 @@ public class RadiusPalette extends Palette {
 
     @Override
     protected void onApply() {
-        float w,h,density;
+        float r,density;
         mRadiusValue = mSbRadius.getProgress();
         mDensityValue = mSbDensity.getProgress();
         r = mSbRadius.getProgress()/MAX;
