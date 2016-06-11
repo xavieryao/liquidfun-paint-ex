@@ -84,6 +84,9 @@ public abstract class Tool {
     // scales used for Circle
     protected float mRadius;
 
+    // only for rigid body.
+    protected float mDensity = 10.0f;
+
     // member native (C++) variables
     protected ParticleColor mColor = new ParticleColor();
     protected Vec2 mVelocity = new Vec2(0, 0);
@@ -433,6 +436,10 @@ public abstract class Tool {
 
     public void setRadius(float rad) {
       mRadius = rad;
+    }
+
+    public void setDensity(float dens) {
+      mDensity = dens;
     }
 
 }

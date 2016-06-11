@@ -120,6 +120,13 @@ public class Controller implements OnTouchListener, SensorEventListener {
             mTool.setRadius(r);
         }
     }
+
+    public void setDensity(float density) {
+      if (mTool != null) {
+        mTool.setDensity(density);
+      }
+    }
+
     public void setTool(ToolType type) {
         Tool oldTool = mTool;
         mTool = Tool.getTool(type);

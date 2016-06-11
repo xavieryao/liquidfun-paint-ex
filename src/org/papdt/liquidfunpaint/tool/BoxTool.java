@@ -23,7 +23,6 @@ public class BoxTool extends Tool {
     // private float mW = 0.15f; // width
     private float mFriction = 0.5f;
     private float mRestitution = 0.5f;
-    private float mDensity = 10.0f;
 
     public BoxTool() {
         super(ToolType.BOX);
