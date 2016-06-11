@@ -19,8 +19,8 @@ import android.view.View;
 public class BoxTool extends Tool {
     private final static String TAG = "BoxTool";
 
-    private float mH = 0.05f; // height
-    private float mW = 0.15f; // width
+    // private float mH = 0.05f; // height
+    // private float mW = 0.15f; // width
     private float mFriction = 0.5f;
     private float mRestitution = 0.5f;
     private float mDensity = 10.0f;
@@ -44,7 +44,7 @@ public class BoxTool extends Tool {
                       Renderer.getInstance().sRenderWorldHeight *
                           (v.getHeight() - screenY)
                       / v.getHeight());
-              addPolygon(worldPoint,convSize(mH), convSize(mW));
+              addPolygon(worldPoint,convSize(mHeight), convSize(mWidth));
               break;
           default:
               break;

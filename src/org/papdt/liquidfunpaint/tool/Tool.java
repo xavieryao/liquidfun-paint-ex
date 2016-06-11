@@ -78,6 +78,12 @@ public abstract class Tool {
 
     protected int mFillColor;
 
+    // scales used for rectangles
+    protected float mHeight;
+    protected float mWidth;
+    // scales used for Circle
+    protected float mRadius;
+
     // member native (C++) variables
     protected ParticleColor mColor = new ParticleColor();
     protected Vec2 mVelocity = new Vec2(0, 0);
@@ -418,6 +424,15 @@ public abstract class Tool {
 
     protected float convCordY(float y, View v) {
         return Renderer.getInstance().sRenderWorldHeight * y / v.getHeight();
+    }
+
+    public void setSize(float w, float h) {
+        mWidth = w;
+        mHeight = h;
+    }
+
+    public void setRadius(float rad) {
+      mRadius = rad;
     }
 
 }

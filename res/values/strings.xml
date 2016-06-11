@@ -54,7 +54,8 @@
     <string name="color_water_11">Daffodil</string>
     <string name="color_water_12">Lemon</string>
 
-    <string name="scale_h">长</string>
-    <string name="scale_w">宽</string>
+    <string name="scale_h">长度</string>
+    <string name="scale_w">宽度</string>
+    <string name="density">密度</string>
 
 </resources>

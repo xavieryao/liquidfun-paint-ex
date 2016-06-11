@@ -109,6 +109,17 @@ public class Controller implements OnTouchListener, SensorEventListener {
         }
     }
 
+    public void setSize(float w, float h) {
+        if (mTool != null) {
+            mTool.setSize(w,h);
+        }
+    }
+
+    public void setRadius(float r) {
+        if (mTool != null) {
+            mTool.setRadius(r);
+        }
+    }
     public void setTool(ToolType type) {
         Tool oldTool = mTool;
         mTool = Tool.getTool(type);
