@@ -57,5 +57,6 @@
     <string name="scale_h">长度</string>
     <string name="scale_w">宽度</string>
     <string name="density">密度</string>
+    <string name="radius">半径</string>  
 
 </resources>
