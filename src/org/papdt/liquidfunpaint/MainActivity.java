@@ -39,6 +39,7 @@ import android.os.Bundle;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.WindowManager;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.animation.AlphaAnimation;
@@ -93,8 +94,9 @@ public class MainActivity extends Activity implements OnTouchListener {
         System.loadLibrary("liquidfun_jni");
 
 
-        Log.e(TAG, "Hello World");
         // Set the ToolBar layout
+        // requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.tools_layout);
         mRootLayout = (RelativeLayout) findViewById(R.id.root);
 
