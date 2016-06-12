@@ -16,7 +16,6 @@ import org.papdt.liquidfunpaint.R;
 
 public class RadiusPalette extends Palette {
     private SeekBar mSbRadius, mSbDensity;
-    private ColorPickerView mColorPicker;
     private static final float MAX = 2*1000f;
     private static final float MAX_DENSITY = 20f;
 
@@ -33,14 +32,6 @@ public class RadiusPalette extends Palette {
         mSbDensity = (SeekBar) v.findViewById(R.id.sb_density);
         mSbRadius.setProgress(mRadiusValue);
         mSbDensity.setProgress(mDensityValue);
-        mColorPicker = (ColorPickerView) v.findViewById(R.id.color_picker);
-        mColorPicker.setInitialColor(mColor, false);
-        mColorPicker.addOnColorSelectedListener(new OnColorSelectedListener(){
-            @Override
-            public void onColorSelected(int color) {
-              mColor = color;
-            }
-        });
         return v;
     }
 
@@ -51,8 +42,6 @@ public class RadiusPalette extends Palette {
         mDensityValue = mSbDensity.getProgress();
         r = mSbRadius.getProgress()/MAX;
         density = mSbDensity.getProgress()/MAX*MAX_DENSITY;
-        int color = mColorPicker.getSelectedColor();
-        mController.setColor(color);
         mController.setRadius(r);
         mController.setDensity(density);
     }

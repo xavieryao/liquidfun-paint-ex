@@ -93,7 +93,7 @@
              android:layout_marginBottom="@dimen/tool_margin_bottom"
              android:clickable="true"
              android:onClick="onClickTool"
-             android:src="@drawable/box" />
+             android:src="@drawable/ball" />
 
         <ImageView
             android:id="@+id/box"
@@ -141,7 +141,7 @@
                 android:layout_marginBottom="@dimen/tool_margin_bottom"
                 android:clickable="true"
                 android:onClick="onClickTool"
-                android:src="@drawable/water_6" />
+                android:src="@drawable/oil" />
 
         <ImageView
             android:id="@+id/water"

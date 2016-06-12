@@ -5,16 +5,6 @@
    android:orientation="vertical"
    android:gravity="center_horizontal"
    android:layout_height="match_parent" >
-
-    <com.flask.colorpicker.ColorPickerView
-       android:id="@+id/color_picker"
-       android:layout_width="150dp"
-       android:layout_height="150dp"
-       app:alphaSlider="true"
-       android:layout_gravity="center"
-       app:density="12"
-       app:lightnessSlider="true"
-       app:wheelType="FLOWER" />
        <LinearLayout
          xmlns:tools="http://schemas.android.com/tools"
          xmlns:app="http://schemas.android.com/apk/res-auto"

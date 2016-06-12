@@ -149,7 +149,6 @@ public class DebugRenderer extends Draw {
 
     @Override
     public void drawCircle(Vec2 center, float radius, Color color) {
-        Log.d(TAG, "drawCircle");
 
         mCirclePositionBuffer.putFloat(center.getX());
         mCirclePositionBuffer.putFloat(center.getY());
@@ -165,7 +164,6 @@ public class DebugRenderer extends Draw {
     @Override
     public void drawSolidCircle(
             Vec2 center, float radius, Vec2 axis, Color color) {
-        Log.d(TAG, "drawSolidCircle");
         drawCircle(center, radius, color);
         // Draw the axis line
         float centerX = center.getX();
