@@ -179,7 +179,8 @@ public class MainActivity extends Activity implements OnTouchListener {
             try {
                 sVersionName = "Version "
                         + getPackageManager()
-                            .getPackageInfo(getPackageName(), 0).versionName;
+                            .getPackageInfo(getPackageName(), 0).versionName
+                        + "Extended";
                 versionView.setText(sVersionName);
             } catch (NameNotFoundException e) {
                 // The name returned by getPackageName() must be found.
